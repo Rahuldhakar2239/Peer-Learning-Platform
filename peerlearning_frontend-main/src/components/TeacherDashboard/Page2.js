@@ -8,8 +8,6 @@ import styles from "./Page2.module.css";
 import thumbnail from "./Images/thumbnail.png";
 import bottom from "../../images/bottom.png";
 import Spinner from "../Spinner/Spinner";
-import { ScoreCard } from "../ScoreCard";
-import { PieChart, Pie } from 'recharts';
 
 function conversion(hours, minutes) {
     var t;
@@ -58,21 +56,10 @@ function none(hours) {
 }
 var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-export default function Page2({ assg, activities, marks, reviewerCount }) {
-    console.log(assg);
-    console.log(activities);
-    console.log(marks);
-    console.log(reviewerCount);
+export default function Page2({ assg }) {
     const { userData, setUserData, setOpen, setMessage } = useContext(
         AuthContext
     );
-    var i = 200;
-    var j = 1000;
-    const data = [
-        { name: 'Completed', students: i, fill: "rgba(75, 192, 192, 0.2)" },
-        { name: 'In-Progress', students: 200, fill: "rgba(255, 206, 86, 0.3)" },
-        { name: 'Not-Started', students: j, fill: "rgba(255, 99, 132, 0.4)" },
-    ];
     const [TeachersName, setTeachersName] = useState([]);
     const [spin, setspin] = useState(true);
     fetch(`${G_API}/courses/${assg.courseId}/teachers`, {
@@ -108,7 +95,7 @@ export default function Page2({ assg, activities, marks, reviewerCount }) {
                                 <div className={styles.pointsanddue}>
                                     {assg.maxPoints ? <p className={styles.points}>{assg.maxPoints} Points</p> : <p className={styles.points}>Ungraded</p>}
                                     <div className={styles.duediv}>
-                                        {assg.dueDate ? <p className={styles.due}>Due {assg.dueDate.day}/{assg.dueDate.month}/{assg.dueDate.year}, {assg.dueTime.minutes ? conversion(assg.dueTime.hours, assg.dueTime.minutes) : none(assg.dueTime.hours)} </p> : <p className={styles.due}>No Due Date</p>}
+                                    {assg.dueDate ? <p className={styles.due}>Due {assg.dueDate.day}/{assg.dueDate.month}/{assg.dueDate.year}, {assg.dueTime.minutes ? conversion(assg.dueTime.hours, assg.dueTime.minutes) : none(assg.dueTime.hours)} </p> : <p className={styles.due}>No Due Date</p>}
                                     </div>
                                 </div>
                                 <Line className={styles.line} />
@@ -143,90 +130,6 @@ export default function Page2({ assg, activities, marks, reviewerCount }) {
                             <button className={styles.btn4}>View detailed Analytics </button>
                         </div>
                     </div>
-                    <p className={styles.completeprogress}>Completion Progress</p>
-                    <PieChart width={600} height={350}>
-                        <Pie
-                            data={data}
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={150}
-                            dataKey="students"
-                            label={({
-                                cx,
-                                cy,
-                                midAngle,
-                                innerRadius,
-                                outerRadius,
-                                value,
-                                index
-                            }) => {
-                                console.log("handling label?");
-                                const RADIAN = Math.PI / 180;
-                                // eslint-disable-next-line
-                                const radius = 25 + innerRadius + (outerRadius - innerRadius);
-                                // eslint-disable-next-line
-                                const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                                // eslint-disable-next-line
-                                const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-                                return (
-                                    <text
-                                        x={x}
-                                        y={y}
-                                        fill="#8884d8"
-                                        textAnchor={x > cx ? "start" : "end"}
-                                        dominantBaseline="central">
-                                        {data[index].name} ({value})
-                                    </text>
-                                );
-                            }}
-                        />
-                    </PieChart>
-                    {activities.length > 0 && assg.status !== "Added" && (
-                        <>
-                            <p style={{ padding: "8px 0px 5px 20px", marginLeft: "-10px", fontSize: "20px", color: "#8AB6D6", marginTop: "100px" }}>Student Submissions</p>
-                            <table className="reviewers" style={{ width: "90%", backgroundColor: "white", marginLeft: "10px" }}>
-                                <tr>
-                                    <th style={{ textAlign: "center" }}>Student Name</th>
-                                    {Array(reviewerCount).fill(0).map((a, i) => (
-                                        <th style={{ textAlign: "center" }}>
-                                            Reviewer {i + 1}
-                                        </th>
-                                    ))}
-                                </tr>
-                                <tbody>
-                                    {activities.map((row) => (
-                                        <tr key={row.name} >
-                                            <td>
-                                                {row[0].profile.name.fullName}
-                                            </td>
-
-                                            {row.slice(1, row.length).map((r) => (
-                                                <td align="left" key={r.name.fullName}>
-                                                    <ScoreCard
-                                                        data={r}
-                                                        questions={assg.total_questions}
-                                                    >
-                                                        {r.name.fullName}
-                                                    </ScoreCard>
-                                                </td>
-                                            ))}
-                                            {row.length === 1 && (
-                                                <>
-                                                    {Array(reviewerCount).fill(0).map((a, i) => (
-                                                        <td align="left" style={{ color: "red" }}>
-                                                            No Submission
-                                                        </td>
-                                                    ))
-                                                    }
-                                                </>
-                                            )}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </>
-                    )}
                 </div>}
             {<img src={bottom} alt="Image" className={styles.bottom} />}
         </>

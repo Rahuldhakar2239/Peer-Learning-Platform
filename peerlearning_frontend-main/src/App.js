@@ -12,11 +12,13 @@ import MuiAlert from "@material-ui/lab/Alert";
 import Login from "./pages/Login";
 import Help from "../src/Help/Help";
 import Calendar from "./components/Calendar/Calendar";
-import Done from "./components/Todo/Done";
+import Done from "../src/components/Todo/Done";
+import TodoList from "../src/components/Todo/TodoList"; 
 import Missing from "./components/Todo/Missing";
-import TodoList from "./components/Todo/TodoList";
 import Student_View1 from "./components/student_View/Student_View1";
 import Page1 from "./components/TeacherDashboard/Page1";
+import Assigned from "./components/Todo/Assigned";
+
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -100,15 +102,18 @@ function App() {
               <Route path="/Help" exact>
                 <Help />
               </Route>
-              <Route path="/Assigned" exact>
-                <TodoList />
+              <Route path="/TodoList" exact>
+                <TodoList/>
+              </Route>
+              {/* <Route path="/Assigned" exact>
+                <Assigned/>
               </Route>
               <Route path="/Missing" exact>
                 <Missing />
               </Route>
               <Route path="/Done" exact>
                 <Done />
-              </Route>
+              </Route> */}
               <Route path="/Calendar" exact>
                 <Calendar />
               </Route>

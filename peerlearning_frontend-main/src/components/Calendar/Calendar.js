@@ -48,7 +48,7 @@ export default function Calendar({ setCourse }) {
                 });
         }
     }, [userData.token], [courses.id]);
-    console.log(Assign);
+    // console.log(Assign);
     // console.log(Assign.length);
 
     function chutney(){
@@ -59,10 +59,11 @@ export default function Calendar({ setCourse }) {
             var momo = (string4.substring(0, 4)).concat(string4.substring(5, 7));
             var momo1 = momo.concat(string4.substring(8, 10))
             let momo2 = parseInt(momo1);
+            console.log(momo2);
             dates.push(momo2);
         }
         setDated(dates)
-        console.log(dated);
+        // console.log(dated);
     }
     useEffect(() => {
         chutney();
@@ -173,22 +174,60 @@ export default function Calendar({ setCourse }) {
     // console.log(comp(0,u));
     // console.log(comp(1,u));
     // console.log(comp(6,u));
-    console.log(comp(2,0));
+    // console.log(comp(2,0));
 
     function truncateString(str) {
         return str.length >= 20 ? str.substring(0, 17) + "..." : str;
     }
 
     function timer(time){
-        var ap = "AM";
-        var dt = new Date(time);
-        var both = dt.toLocaleString();
-        if(both.substring(16,19) > 12)
-        {
+        console.log(time);
+        var ap ;
+        var tt = time.substring(11,16);
+        var h = parseInt(time.substring(11,13)) + 5;
+        var m = parseInt(time.substring(14,16)) + 30;
+        if(m>59){
+            h = h+1;
+            m = m - 60;
+            if(m<10)
+            {
+                m = "0" + m;
+            }
+        }
+        if(h<12){
+            ap = "AM";
+        }
+        if(h===12){
             ap = "PM";
         }
-        console.log(both);
-        return both.substring(12,16) + " " + both.substring(20,22);
+        if(h>12 && h<24){
+            ap = "PM"
+            h = h-12;
+            if(h<10)
+            {
+                h = "0" + h;
+               
+            }
+
+        }
+        if(h===24){
+            ap = "AM";
+            h = 12;
+        }
+        if(h>24){
+            ap = "AM";
+            h = h - 24;
+            if(h<10)
+            {
+                h = "0" + h;
+            }
+        }
+        
+        // console.log(h +"and" + m);
+
+        return (h +":" + m + " "  + ap);
+        // var both = time.substring(11,16);
+        // console.log(both);
     }
     return (
         <>

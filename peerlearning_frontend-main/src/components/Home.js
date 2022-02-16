@@ -472,7 +472,7 @@ const Home = ({course,setCourse,studentsView,TeachersView}) => {
           <div className="main">
             <div className="head">
               <button className="btm3"><img src={query} alt="Queries" /> Queries</button>
-              <RouterLink to="/Assigned">
+              <RouterLink to="/TodoList">
                 <button className="btm3"><img src={todo} alt="Todos" /> To-Do</button>
               </RouterLink>
               <RouterLink to="/Calendar">

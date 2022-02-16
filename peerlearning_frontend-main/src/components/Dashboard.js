@@ -36,7 +36,7 @@ const Plotly = window.Plotly
 const Dashboard = () => {
   const [Spin, setSpin] = useState(true);
   const [Spin1, setSpin1] = useState(true);
-  const [rev, setrev] = useState(true);
+  const [rev,setrev] = useState(true);
   const { id, course_id } = useParams(); //id is for assignment's _id of peer assignment
   const [assignment, setAssignment] = useState({}); //for storing info about the assignment fetched from both classroom and peer learning
   const [role, setRole] = useState("student");
@@ -150,7 +150,7 @@ const Dashboard = () => {
     if (role === "student" && assignment.status === "Grading") {
       getStudentReviews();
     }
-
+      
     //   fetch(`${API}/api/plot9?Assignment_id=${assignment._id}&studentID=${userData.user.googleId}`, {
     //     method: "GET"
     //   })
@@ -191,91 +191,93 @@ const Dashboard = () => {
     //       var ele = document.querySelector('#ConsistencyQue');
     //       Plotly.newPlot(ele, res.data, res.layout, res.config);
     //     })
+
+
+
     // }
 
-    if (role === "teacher") {
-      setUserData((u) => ({ ...u, loader: u.loader + 1 }));
-      fetch(`${API}/api/peeractivity?peer_assignment_id=${id}`) //for getting reviews and comments of students
-        .then((res) => res.json())
-        .then((res) => {
-          // console.log("res for getting reviews and comments");
-          // console.log(res);
-          fetch(
-            `https://classroom.googleapis.com/v1/courses/${course_id}/students`, //gets the list of all students enrolled in the course
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${userData.token}`,
-              },
-            }
-          )
-            .then((r) => r.json())
-            .then((r) => {
-              setUserData((u) => ({ ...u, loader: u.loader - 1 }));
-              // console.log("r for getting list of students");
-              // console.log(r);
-              let a = [];
-              let authorMap = {};  //for storing the list of all students info with their id as key
-              r.students.forEach((s) => {
-                // console.log(s);
-                authorMap[s.userId] = [s];
-              });
-              // console.log("Author Map");
-              // console.log(authorMap);
-              // console.log("Result res");
-              // console.log(res);
-              res.forEach((activity) => {
-                // console.log(activity.author_id);
-                // console.log(authorMap[activity.author_id]);
-                if (authorMap[activity.author_id] !== undefined) {
-                  authorMap[activity.author_id] = [
-                    ...authorMap[activity.author_id],
-                    {
-                      ...activity,
-                      ...authorMap[activity.reviewer_id][0].profile,
-                    },
-                  ];
-                }
-                // console.log(authorMap);
-                // console.log(activity);
-              });
+    // if (role === "teacher") {
+    //   setUserData((u) => ({ ...u, loader: u.loader + 1 }));
+    //   fetch(`${API}/api/peeractivity?peer_assignment_id=${id}`) //for getting reviews and commnets of students
+    //     .then((res) => res.json())
+    //     .then((res) => {
+    //       // console.log("res for getting reviews and comments");
+    //       // console.log(res);
+    //       fetch(
+    //         `https://classroom.googleapis.com/v1/courses/${course_id}/students`, //gets the list of all students enrolled in the course
+    //         {
+    //           method: "GET",
+    //           headers: {
+    //             Authorization: `Bearer ${userData.token}`,
+    //           },
+    //         }
+    //       )
+    //         .then((r) => r.json())
+    //         .then((r) => {
+    //           setUserData((u) => ({ ...u, loader: u.loader - 1 }));
+    //           // console.log("r for getting list of students");
+    //           // console.log(r);
+    //           let a = [];
+    //           let authorMap = {};  //for storing the list of all students info with their id as key
+    //           r.students.forEach((s) => {
+    //             // console.log(s);
+    //             authorMap[s.userId] = [s];
+    //           });
+    //           // console.log("Author Map");
+    //           // console.log(authorMap);
+    //           // console.log("Result res");
+    //           // console.log(res);
+    //           res.forEach((activity) => {
+    //             // console.log(activity.author_id);
+    //             // console.log(authorMap[activity.author_id]);
+    //             // if (authorMap[activity.author_id] !== undefined) {
+    //             authorMap[activity.author_id] = [
+    //               ...authorMap[activity.author_id],
+    //               {
+    //                 ...activity,
+    //                 ...authorMap[activity.reviewer_id][0].profile,
+    //               },
+    //             ];
+    //             // }
+    //             // console.log(authorMap);
+    //             // console.log(activity);
+    //           });
 
-              Object.keys(authorMap).forEach((author) => {
-                a.push(authorMap[author]);
-              });
-              setActivities([...a]);
-              // console.log(activities);
-              let em = []; //store ids of students who have not submitted their reviews
-              res.forEach((act) => {
-                if (act.review_score.length === 0) {
-                  em.push(authorMap[act.reviewer_id][0].profile.emailAddress);
-                }
-              });
-              // console.log("em");
-              // console.log(em);
-              var countReviewr = 0;
-              a.forEach((tttt) => {
-                //console.log(tttt);
-                if (countReviewr < (tttt.length)) {
-                  countReviewr = tttt.length - 1;
-                }
-              });
-              // console.log(countReviewr);
-              setReviewerCount(countReviewr);
-              // console.log(reviewerCount);
-              setMail(
-                "mailto:" +
-                encodeURI(em) +
-                "?subject=" +
-                encodeURI("Complete the review process ASAP") +
-                "&body=" +
-                encodeURI(
-                  "Submit the reviews on assigned answersheets. Link - https://serene-agnesi-9ee115.netlify.app/"
-                )
-              );
-            });
-        });
-    }
+    //           Object.keys(authorMap).forEach((author) => {
+    //             a.push(authorMap[author]);
+    //           });
+    //           setActivities([...a]);
+    //           // console.log(activities);
+    //           let em = []; //store ids of students who have not submitted their reviews
+    //           res.forEach((act) => {
+    //             if (act.review_score.length === 0) {
+    //               em.push(authorMap[act.reviewer_id][0].profile.emailAddress);
+    //             }
+    //           });
+    //           // console.log("em");
+    //           // console.log(em);
+    //           var countReviewr = 0;
+    //           a.forEach((tttt) => {
+    //             // console.log(tttt);
+    //             if (countReviewr < (tttt.length)) {
+    //               countReviewr = tttt.length - 1;
+    //             }
+    //           });
+    //           // console.log(countReviewr);
+    //           setReviewerCount(countReviewr);
+    //           // console.log(reviewerCount);
+    //           setMail(
+    //             "mailto:" +
+    //             encodeURI(em) +
+    //             "?subject=" +
+    //             encodeURI("Complete the review process ASAP") +
+    //             "&body=" +
+    //             encodeURI(
+    //               "Submit the reviews on assigned answersheets. Link - https://serene-agnesi-9ee115.netlify.app/"
+    //             )
+    //           );
+    //         });
+    //     });
 
 
     //   fetch(`${API}/api/plot1?Assignment_id=${assignment._id}`, {
@@ -427,7 +429,7 @@ const Dashboard = () => {
   //         setMessage("Some thing went wrong ");
   //       }
   //     );
-
+     
   // };
 
   const getStudentReviews = () => {
@@ -470,18 +472,18 @@ const Dashboard = () => {
 
   return (
     <>
-      {
-        Spin && Spin1 ? <Spinner />
-          : <div className="dashboard">
-            <div className="contain">
-              {role === "student" ?
-                assignment.status === "Assigned" ? <Student_View2 assg={assignment} self={self} activities={activities} marks={marks} setSelf={setSelf} setActivities={setActivities} />
-                  : <Student_View3 assg={assignment} activities={activities} marks={marks} setActivities={setActivities}/>
-                : assignment.status === "Assigned" ? <Page2 assg={assignment} activities={activities} marks={marks} reviewerCount={reviewerCount}/>
-                  : <Page3 assg={assignment} />}
-            </div>
-          </div>
-      }
+    {
+      Spin && Spin1? <Spinner/>
+      :<div className="dashboard">
+      <div className="contain">
+        {role === "student" ? 
+        assignment.status==="Assigned" ? <Student_View2 assg={assignment} self={self} activities={activities} marks={marks} setSelf={setSelf} setActivities={setActivities}/>
+          :<Student_View3 assg={assignment} activities={activities} marks={marks} setActivities={setActivities}/>
+         :  assignment.status==="Assigned" ? <Page2 assg={assignment}/>
+         :<Page3 assg={assignment}/> }
+      </div>
+    </div>
+    }
     </>
 
     // <div className="dashboard">

@@ -101,7 +101,7 @@ export default function Page3({ assg }) {
                                 <Line className={styles.line} />
                                 <p className={styles.AssignmentSubtitle}>{assg.description}</p>
                                 {assg.materials ?
-                                    <a href={assg.materials[0].driveFile.driveFile.alternateLink} target="_blank">
+                                    <a href={assg.materials[0].driveFile.driveFile.alternateLink}>
                                         <div className={styles.uploadDoc}>
                                             <img id={styles.thumbnail1} src={assg.materials[0].driveFile.driveFile.thumbnailUrl} />
                                             <div id={styles.written}>

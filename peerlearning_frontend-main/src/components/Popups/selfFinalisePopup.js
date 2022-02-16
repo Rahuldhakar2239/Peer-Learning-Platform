@@ -59,7 +59,7 @@ export default function SelfFinalisePopup({ selfFinalise, SetselfFinalise, self,
                             </div>
                             <p id={styles.reviews}>Once Finalized, you can't make any further changes to your Scores</p>
                             <div className={styles.option}>
-                                <button id={styles.btn} onClick={(e) => { SetselfFinalise(false); handleit(e); submitReview(self) }}>Yes</button>
+                                <button id={styles.btn} onClick={(e) => {SetselfFinalise(false);handleit(e); submitReview(self)}}>Yes</button>
                                 <button id={styles.btn1} onClick={() => SetselfFinalise(false)}>No</button>
                             </div>
                         </div>

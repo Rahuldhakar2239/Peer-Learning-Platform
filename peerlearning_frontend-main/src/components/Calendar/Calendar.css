@@ -51,7 +51,7 @@
 
 .curr_date{
   display: inline;
-  padding:8px 12px;
+  padding:8px 17px;
   border-radius:100%;
   background-color: #1a73e8;
   color: #fff;
@@ -73,7 +73,8 @@
   text-align: left;
   border-radius: 5px;
   min-height: 80px;
-  width: 100%;
+  width: 97%;
+  margin-left:2px;
   margin-top: 20px;
   padding-top: 7px;
   padding-left: 10px;
